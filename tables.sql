@@ -29,7 +29,7 @@ COPY public.performance (fl_date, mkt_carrier, mkt_carrier_fl_num, origin, origi
 FROM '/Users/Downloads/OntimeCarrier.csv' 
 DELIMITER ',' 
 CSV HEADER ENCODING 'UTF8' 
-QUOTE '\"' 
+QUOTE '"' 
 ESCAPE '''';
 
  
