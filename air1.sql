@@ -142,9 +142,103 @@ INNER JOIN codes_carrier cc
 LEFT JOIN codes_cancellation ca
 	ON p.cancellation_code = ca.cancellation_code;
 
+SELECT dep_delay_new FROM performance;
+	
+SELECT AVG(dep_delay_new) FROM performance;
 
+SELECT mkt_carrier,
+		AVG(dep_delay_new)
+	FROM performance p
+	GROUP BY mkt_carrier;
 
+-- add inner join to make table easier to reference
+SELECT p.mkt_carrier,
+		c.carrier_desc,
+		AVG(p.dep_delay_new)
+	FROM performance p
+JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	GROUP BY p.mkt_carrier,
+			c.carrier_desc;
 
+-- add order by to see airline with shortest dept delay
+SELECT p.mkt_carrier,
+		c.carrier_desc,
+		AVG(p.dep_delay_new)
+	FROM performance p
+JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	GROUP BY p.mkt_carrier,
+			c.carrier_desc
+	ORDER BY AVG(p.dep_delay_new);
+
+SELECT p.mkt_carrier,
+		c.carrier_desc,
+		AVG(p.dep_delay_new)
+	FROM performance p
+JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	GROUP BY p.mkt_carrier,
+			c.carrier_desc
+	ORDER BY AVG(p.dep_delay_new) DESC;
+
+SELECT p.mkt_carrier,
+		c.carrier_desc,
+		AVG(p.dep_delay_new) AS dept_delay,
+		AVG(p.arr_delay_new) AS arrival_delay
+	FROM performance p
+JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	GROUP BY p.mkt_carrier,
+			c.carrier_desc
+	ORDER BY 2; --order by 2nd column
+
+-- see who had lowest avg of dept & arrival delays
+SELECT p.mkt_carrier,
+		c.carrier_desc,
+		AVG(p.dep_delay_new) AS dep_delay,
+		AVG(p.arr_delay_new) AS arrival_delay
+	FROM performance p
+JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	GROUP BY p.mkt_carrier,
+			c.carrier_desc
+-- 			(p.dep_delay_new + p.arr_delay_new) as delay_total
+	ORDER BY AVG(p.dep_delay_new);
+
+-- -----------------------------------------------------
+-- see who had lowest avg of dept & arrival delays
+SELECT p.mkt_carrier,
+		c.carrier_desc,
+		AVG(p.dep_delay_new) AS dep_delay,
+		AVG(p.arr_delay_new) AS arrival_delay
+-- 		, (p.dep_delay_new + p.arr_delay_new) as delay_avg
+
+	FROM performance p
+JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	GROUP BY p.mkt_carrier,
+			c.carrier_desc
+	ORDER BY AVG(p.dep_delay_new);
+
+SELECT dep_delay_new + arr_delay_new as delay_total FROM performance;
+
+SELECT (dep_delay_new + arr_delay_new) AS total_delay
+	FROM performance
+	GROUP BY mkt_carrier;
+
+-- -----------------------------------------------------
+
+SELECT p.mkt_carrier,
+		c.carrier_desc,
+		AVG(p.dep_delay_new)
+	FROM performance p
+JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	GROUP BY p.mkt_carrier,
+			c.carrier_desc
+	HAVING AVG(p.dep_delay_new)>15
+	AND AVG(arr_delay_new)>15;
 
 
 
