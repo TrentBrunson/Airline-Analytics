@@ -240,7 +240,82 @@ JOIN codes_carrier c
 	HAVING AVG(p.dep_delay_new)>15
 	AND AVG(arr_delay_new)>15;
 
+-- BIZ CASE dept delays at Omaha airport in Jan
+SELECT p.fl_date,
+		p.mkt_carrier,
+		c.carrier_desc,
+		p.mkt_carrier_fl_num,
+		p.origin,
+		p.origin_city_name,
+		p.dep_delay_new
+	FROM performance p
+INNER JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	WHERE p.origin = 'OMA';
 
+SELECT AVG(dep_delay_new) as avg_delay 
+	FROM performance 
+	WHERE origin = 'OMA'
+-- 	exclude on-times to just focus on delays
+	AND dep_delay_new <>0;
+	
+SELECT p.mkt_carrier,
+		c.carrier_desc,
+		AVG(p.dep_delay_new) avg_delay
+	FROM performance p
+INNER JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	WHERE p.origin = 'OMA'
+		AND p.dep_delay_new <>0
+	GROUP BY p.mkt_carrier,
+				c.carrier_desc;
+
+SELECT p.mkt_carrier,
+		c.carrier_desc,
+		AVG(p.dep_delay_new) avg_delay
+	FROM performance p
+INNER JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	WHERE p.origin = 'OMA'
+		AND p.dep_delay_new <>0
+	GROUP BY p.mkt_carrier,
+				c.carrier_desc;
+
+SELECT p.mkt_carrier,
+		c.carrier_desc,
+		AVG(p.dep_delay_new) avg_delay
+	FROM performance p
+INNER JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	WHERE p.origin = 'OMA'
+		AND p.dep_delay_new <>0
+	GROUP BY p.mkt_carrier,
+				c.carrier_desc;
+
+SELECT p.mkt_carrier,
+		c.carrier_desc,
+		AVG(p.dep_delay_new) avg_delay
+	FROM performance p
+INNER JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	WHERE p.origin = 'OMA'
+		AND p.dep_delay_new <>0
+	GROUP BY p.mkt_carrier,
+				c.carrier_desc
+	ORDER BY AVG(p.dep_delay_new);
+
+SELECT p.mkt_carrier,
+		c.carrier_desc,
+		AVG(p.dep_delay_new) avg_delay
+	FROM performance p
+INNER JOIN codes_carrier c
+	ON p.mkt_carrier = c.carrier_code
+	WHERE p.origin = 'OMA'
+		AND p.dep_delay_new <>0
+	GROUP BY p.mkt_carrier,
+				c.carrier_desc
+	HAVING AVG(p.dep_delay_new) >45
+	ORDER BY AVG(p.dep_delay_new);
 
 
 
