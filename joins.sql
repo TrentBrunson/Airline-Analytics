@@ -31,7 +31,7 @@ JOIN orders
 ON customers.customer_id = orders.customer_id;
 
 FROM customers,
-orders
+        orders
 WHERE customers.customer_id = orders.customer_id
 
 SELECT c.first_name,
